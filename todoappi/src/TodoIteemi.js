@@ -1,8 +1,8 @@
-function TodoIteemi() {
+function TodoIteemi(props) {
     return (
-        <b>
-            Iteemi
-        </b>
+        <div>
+            Iteemi {props.otsikko}
+        </div>
     );
 }
 
