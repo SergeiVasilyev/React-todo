@@ -15,6 +15,7 @@ export default class App extends React.Component {
     axios.get(`http://127.0.0.1:8000/api/tehtavat/`)
       .then(res => {
         const iteemit = res.data;
+        console.log('iteemit ', iteemit)
         this.setState({ iteemit });
       })
       .catch(error => {
