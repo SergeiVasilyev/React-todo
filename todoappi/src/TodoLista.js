@@ -1,11 +1,15 @@
+import Stack from 'react-bootstrap/Stack'
+import Container from 'react-bootstrap/Container'
+
 import TodoIteemi from './TodoIteemi.js';
 
 function TodoLista(props) {
     // props.iteemit
     return (
-        <div>
+        <Stack gap={1} direction='vertical'>
             {props.iteemit.map(
-                (x) => (<TodoIteemi 
+                (x) => (<TodoIteemi
+                            id={x.id}
                             otsikko={x.otsikko} 
                             tehty={x.tehty} 
                             merkitseTehdyksi={
@@ -17,7 +21,7 @@ function TodoLista(props) {
 
             {/* <TodoIteemi otsikko="Eka" />
             <TodoIteemi otsikko="Toka" /> */}
-        </div>
+        </Stack>
     );
 }
 
