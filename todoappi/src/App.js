@@ -35,9 +35,12 @@ export default class App extends React.Component {
     }
     return (
       <div className="App">
-        <TodoLista iteemit={data} />
+        <TodoLista iteemit={data} merkitseTehtavaTehdyksi={this.merkitseTehtavaTehdyksiRajapinnassa} />
       </div>
     );
+  }
+  merkitseTehtavaTehdyksiRajapinnassa(id) {
+    console.log(id)
   }
 }
 
