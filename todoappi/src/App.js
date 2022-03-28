@@ -13,12 +13,13 @@ import { alignPropType } from 'react-bootstrap/esm/types';
 export default class App extends React.Component {
   state = {
     iteemit: [],
-    virheViesti: null
+    virheViesti: null,
+    kirjauduttu: false
   }
 
   componentDidMount() {
-    api.kirjaudu("admin", "admin")
-    api.haeTehtavat()
+    if (this.state.kirjauduttu) {
+      api.haeTehtavat()
       .then(res => {
         const iteemit = res.data;
         console.log('iteemit ', iteemit)
@@ -28,6 +29,8 @@ export default class App extends React.Component {
         this.setState({virheViesti: error.message})
         console.log(error)
       })
+    }
+    
   }
 
   render() {
@@ -40,6 +43,14 @@ export default class App extends React.Component {
         </Container>
       )
     }
+
+    if (!this.state.kirjauduttu) {
+      return (
+        <div>Login dialog</div>
+      )
+    }
+
+
     return (
       <Container className="App">
         <TodoLista 
