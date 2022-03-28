@@ -9,6 +9,7 @@ function TodoLista(props) {
         <Stack gap={1} direction='vertical'>
             {props.iteemit.map(
                 (x) => (<TodoIteemi
+                            key={x.id}
                             id={x.id}
                             otsikko={x.otsikko} 
                             tehty={x.tehty} 

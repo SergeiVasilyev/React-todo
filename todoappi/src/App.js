@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container'
 import * as api from './api'
 import './App.css';
 import TodoLista from './TodoLista.js';
-import { alignPropType } from 'react-bootstrap/esm/types';
+import KirjautumisDialogi from './KirjautumisDialogi';
 
 
 export default class App extends React.Component {
@@ -17,8 +17,7 @@ export default class App extends React.Component {
     kirjauduttu: false
   }
 
-  componentDidMount() {
-    if (this.state.kirjauduttu) {
+  lataaTehtavat() {
       api.haeTehtavat()
       .then(res => {
         const iteemit = res.data;
@@ -29,8 +28,6 @@ export default class App extends React.Component {
         this.setState({virheViesti: error.message})
         console.log(error)
       })
-    }
-    
   }
 
   render() {
@@ -46,7 +43,15 @@ export default class App extends React.Component {
 
     if (!this.state.kirjauduttu) {
       return (
-        <div>Login dialog</div>
+        <KirjautumisDialogi kirjaudu={
+          (kayttaja, salasana) => {
+            const onnistuiko = api.kirjaudu(kayttaja, salasana)
+            this.setState({kirjauduttu: onnistuiko})
+            if (onnistuiko) {
+              this.lataaTehtavat()
+            }
+          }
+        }/>
       )
     }
 

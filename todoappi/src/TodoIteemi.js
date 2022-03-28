@@ -11,7 +11,7 @@ function TodoIteemi(props) {
     const reuna = props.tehty ? 'secondary' : 'primary'
 
     return (
-        <Card className='mb-2' style={{ 'max-width': '26rem' }} border={reuna}>
+        <Card className='mb-2' style={{ maxWidth: '26rem' }} border={reuna}>
         <Card.Header as="h5">{laatikko} Tehtävä {props.id}</Card.Header>
         <Card.Body>
             <Card.Title>{otsikkoElementti}</Card.Title>

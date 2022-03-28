@@ -1,10 +1,12 @@
 import axios from 'axios';
 
 export function kirjaudu(kayttaja, salasana){
+    console.log(`asetetaan tunnus ${kayttaja} / ${salasana}`)
     axios.defaults.auth = {
         username: kayttaja,
         password: salasana
     }
+    return true
 }
 
 export function haeTehtavat() {
