@@ -1,10 +1,14 @@
 import axios from 'axios';
 
 export function kirjaudu(kayttaja, salasana){
-    console.log(`asetetaan tunnus ${kayttaja} / ${salasana}`)
-    axios.defaults.auth = {
+    axios.post("http://127.0.0.1:8000/auth/token/login", {
         username: kayttaja,
         password: salasana
+    })
+    console.log(`asetetaan tunnus ${kayttaja} / ${salasana}`)
+    // axios.defaults.auth = {
+    //     username: kayttaja,
+    //     password: salasana
     }
     return true
 }
