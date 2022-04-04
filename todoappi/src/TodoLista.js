@@ -1,33 +1,46 @@
-import Stack from 'react-bootstrap/Stack'
-import Container from 'react-bootstrap/Container'
+import Stack from 'react-bootstrap/Stack';
 
-import TodoIteemi from './TodoIteemi.js';
+import TodoIteemi from './TodoIteemi';
 
 function TodoLista(props) {
-    // props.iteemit
-    return (
-        <Stack gap={1} direction='vertical'>
-            {props.iteemit.map(
-                (x) => (<TodoIteemi
-                            key={x.id}
-                            id={x.id}
-                            otsikko={x.otsikko} 
-                            tehty={x.tehty} 
-                            merkitseTehdyksi={
-                                () => props.merkitseTehtavaTehdyksi(x.id)
-                            }
-                        />
-                        )
-            )}
+    /*
+    Parametrina annettu "props" pitäisi näyttää tältä:
+    props = {
+        "iteemit": [
+            {
+                "id": 123,
+                "otsikko": "Joku otsikko",
+                "tehty": false
+            },
+            {
+                "id": 456,
+                "otsikko": "Joku toinen otsikko",
+                "tehty": true
+            }
+        ],
+        "merkitseTehtavaTehdyksi": <funkio>
+    }
+    */
 
-            {/* <TodoIteemi otsikko="Eka" />
-            <TodoIteemi otsikko="Toka" /> */}
+    return (
+        <Stack gap={2}>
+            {props.iteemit.map(
+                (x) => (
+                    <TodoIteemi
+                        key={x.id}
+                        id={x.id}
+                        otsikko={x.otsikko}
+                        tehty={x.tehty}
+                        merkitseTehdyksi={
+                            () => (
+                                props.merkitseTehtavaTehdyksi(x.id)
+                            )
+                        }
+                    />
+                )
+            )}
         </Stack>
     );
 }
 
 export default TodoLista;
-
-
-
-

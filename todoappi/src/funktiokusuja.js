@@ -1,32 +1,52 @@
-function main() {
-    teeAsia(sanoMoi)
-    teeAsia(sanoHei)
-    // teeAsia(() => {console.log("Heippa")})
-    teeAsia(() => {console.log("Heippa")})
+/*
+Kokeillaan erilaisia tapoja kutsua funktioita.
+Tavallisia funktioita sekä lambda-funktioita:
+Tavallinen funktio on muotoa:
+    function nimi(parametrit) {
+        koodi;
+    }
+Lambda-funktio on muotoa:
+    (parametrit) => koodi
+tai
+    (parametrit) => { koodi; }
+Myös sulut parametrien ympärillä on vapaaehtoiset, jos parametreja on vain yksi:
+    parametri => koodi
+On myös JavaScriptin vanhempi tapa kirjoittaa anonyymi funktio
+   function(parametrit) { koodi; }
+*/
 
-    teeAsiaNKertaa(sanoHei, 3)
+function main() {
+    teeAsiaKahteenKertaan(sanoHei);
+
+    teeAsiaKahteenKertaan(() => console.log("Heippa"));
+
+    const teeAsiaKolmeenKertaan = (asia) => teeAsiaNkertaa(asia, 3);
+
+    teeAsiaKahteenKertaan(
+        () => teeAsiaKolmeenKertaan(sanoMoi)
+    );
+
+    teeAsiaKahteenKertaan(function() {console.log("heips");});
 }
 
 function sanoMoi() {
-    console.log("asas")
+    console.log("Moi");
 }
 
 const sanoHei = () => {
-    console.log("asas2")
+    console.log("Hei");
 }
 
-function teeAsia(asiaFunktio){
-    asiaFunktio()
-    console.log("start")
-    asiaFunktio()
+function teeAsiaKahteenKertaan(asiaFunktio) {
+    asiaFunktio();
+    asiaFunktio();
 }
 
-function teeAsiaNKertaa(asiaFunktio, n) {
-    for (let i = 0; i < n; ++i){
-        asiaFunktio()
+function teeAsiaNkertaa(asiaFunktio, n) {
+    for (let i = 0; i < n; ++i) {
+        asiaFunktio();
     }
 }
-
 
 main()
 

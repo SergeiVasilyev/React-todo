@@ -1,28 +1,19 @@
 import axios from 'axios';
 
-export function kirjaudu(kayttaja, salasana){
-    return axios.post("http://127.0.0.1:8000/auth/token/login", {
+export function kirjaudu(kayttaja, salasana) {
+    axios.defaults.auth = {
         username: kayttaja,
         password: salasana
-    })
-    console.log(`asetetaan tunnus ${kayttaja} / ${salasana}`)
-    // axios.defaults.auth = {
-    //     username: kayttaja,
-    //     password: salasana
-    }
-    return true
+    };
+    return true;
 }
 
 export function haeTehtavat() {
-    return axios.get(`http://127.0.0.1:8000/api/tehtavat/`)
+    return axios.get(`http://127.0.0.1:8000/api/tehtavat/`);
 }
 
-export function merkitseTehdyksi(id){
-    axios.patch(`http://127.0.0.1:8000/api/tehtavat/${id}/`, {
-      tehty: true
-    })
+export function merkitseTehdyksi(id) {
+    return axios.patch(`http://127.0.0.1:8000/api/tehtavat/${id}/`, {
+        tehty: true
+    });
 }
-
-
-
-
