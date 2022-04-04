@@ -16,6 +16,14 @@ export default class App extends React.Component {
         kirjauduttu: false
     }
 
+    componentDidMount() {
+      const kirjauduttu = api.palautaKirjautuminen()
+      if (kirjauduttu) {
+        this.setState({kirjauduttu: true})
+        this.lataaTehtavat()
+      }
+    }
+
     lataaTehtavat() {
         api.haeTehtavat()
             .then((res) => {
@@ -40,11 +48,14 @@ export default class App extends React.Component {
             return (
                 <Kirjautumisdialogi kirjaudu={
                     (kayttaja, salasana) => {
-                        const onnistuiko = api.kirjaudu(kayttaja, salasana);
-                        this.setState({kirjauduttu: onnistuiko});
-                        if (onnistuiko) {
-                            this.lataaTehtavat();
-                        }
+                        api.kirjaudu(kayttaja, salasana)
+                            .then(() => {
+                                this.setState({kirjauduttu: true});
+                                this.lataaTehtavat();
+                            })
+                            .catch((error) => {
+                                this.setState({virheViesti: error.message});
+                            });
                     }
                 }/>
             );
@@ -71,19 +82,3 @@ export default class App extends React.Component {
             });
     }
 }
-
-// function App() {
-//   const data = [
-//     {"otsikko": "Ykkönen"},
-//     {"otsikko": "Kakkonen"},
-//     {"otsikko": "Kolmonen"},
-//   ];
-//   return (
-//     <div className="App">
-//       <TodoLista iteemit={data} />
-
-//     </div>
-//   );
-// }
-
-
