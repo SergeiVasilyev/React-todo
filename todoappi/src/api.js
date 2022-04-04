@@ -37,6 +37,11 @@ export function palautaKirjautuminen() {
     
 }
 
+export function kirjauduUlos(){
+    localStorage.removeItem('token')
+    axios.defaults.headers.common['Authorization'] = undefined
+}
+
 
 
 export function haeTehtavat() {

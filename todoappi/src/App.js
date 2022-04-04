@@ -1,6 +1,8 @@
 import React from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 import './App.css';
@@ -17,59 +19,67 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-      const kirjauduttu = api.palautaKirjautuminen()
-      if (kirjauduttu) {
-        this.setState({kirjauduttu: true})
-        this.lataaTehtavat()
-      }
+        const kirjauduttu = api.palautaKirjautuminen();
+        if (kirjauduttu) {
+            this.setState({kirjauduttu: true});
+            this.lataaTehtavat();
+        }
     }
 
     lataaTehtavat() {
         api.haeTehtavat()
             .then((res) => {
                 const iteemit = res.data;
-                this.setState({iteemit});
+                this.setState({iteemit, virheViesti: null});
             })
             .catch((error) => {
                 this.setState({virheViesti: error.message});
             });
     }
 
-    render() {
-        if (this.state.virheViesti) {
-            return (
-                <Container>
-                    Virhe: {this.state.virheViesti}
-                </Container>
-            );
-        }
+    render() {       
+        const virheKomponentti = (this.state.virheViesti) ? (
+            <Alert variant="danger">
+                Virhe: {this.state.virheViesti}
+            </Alert>
+        ) : null;
 
-        if (!this.state.kirjauduttu) {
-            return (
-                <Kirjautumisdialogi kirjaudu={
-                    (kayttaja, salasana) => {
-                        api.kirjaudu(kayttaja, salasana)
-                            .then(() => {
-                                this.setState({kirjauduttu: true});
-                                this.lataaTehtavat();
-                            })
-                            .catch((error) => {
-                                this.setState({virheViesti: error.message});
-                            });
-                    }
-                }/>
-            );
-        }
+        const kirjautumisKomponentti = (this.state.kirjauduttu) ? (
+            <Button onClick={() => {
+                api.kirjauduUlos();
+                this.setState({kirjauduttu: false, iteemit: []});
+            }}>
+                Kirjaudu ulos
+            </Button>
+        ) : (
+            <Kirjautumisdialogi kirjaudu={
+                (kayttaja, salasana) => {
+                    api.kirjaudu(kayttaja, salasana)
+                        .then(() => {
+                            this.setState({kirjauduttu: true});
+                            this.lataaTehtavat();
+                        })
+                        .catch((error) => {
+                            this.setState({virheViesti: error.message});
+                        });
+                }
+            }/>
+        );
 
-        const data = this.state.iteemit;
+        const listaKomponentti = (this.state.iteemit) ? (
+            <TodoLista
+                iteemit={this.state.iteemit}
+                merkitseTehtavaTehdyksi={
+                    (id) => this.merkitseTehtavaTehdyksiRajapinnassa(id)
+                }
+            />
+        ) : null;
+
         return (
             <Container>
-                <TodoLista
-                    iteemit={data}
-                    merkitseTehtavaTehdyksi={
-                        (id) => this.merkitseTehtavaTehdyksiRajapinnassa(id)
-                    }
-                />
+                {virheKomponentti}
+                {kirjautumisKomponentti}
+                {listaKomponentti}
             </Container>
         );
     }
